@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -12,18 +12,14 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
-class Attribute extends Composite
+final class Attribute extends Composite
 {
     /**
      * @var string
      */
     private $attributeName;
 
-    /**
-     * @param Constraint $constraint
-     * @param string     $attributeName
-     */
-    public function __construct(Constraint $constraint, $attributeName)
+    public function __construct(Constraint $constraint, string $attributeName)
     {
         parent::__construct($constraint);
 
@@ -40,17 +36,12 @@ class Attribute extends Composite
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        value or object to evaluate
-     * @param string $description  Additional information about the test
-     * @param bool   $returnResult Whether to return a result or throw an exception
-     *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return mixed
+     * @throws \ReflectionException
      */
-    public function evaluate($other, $description = '', $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false)
     {
         return parent::evaluate(
             Assert::readAttribute(
@@ -64,8 +55,6 @@ class Attribute extends Composite
 
     /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -79,8 +68,6 @@ class Attribute extends Composite
      * cases. This method should return the second part of that sentence.
      *
      * @param mixed $other evaluated value or object
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {

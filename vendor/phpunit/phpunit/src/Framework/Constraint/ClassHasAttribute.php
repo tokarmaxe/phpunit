@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -26,15 +26,11 @@ class ClassHasAttribute extends Constraint
 
     public function __construct(string $attributeName)
     {
-        parent::__construct();
-
         $this->attributeName = $attributeName;
     }
 
     /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -50,7 +46,7 @@ class ClassHasAttribute extends Constraint
      *
      * @param mixed $other value or object to evaluate
      *
-     * @return bool
+     * @throws \ReflectionException
      */
     protected function matches($other): bool
     {
@@ -66,8 +62,6 @@ class ClassHasAttribute extends Constraint
      * cases. This method should return the second part of that sentence.
      *
      * @param mixed $other evaluated value or object
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {

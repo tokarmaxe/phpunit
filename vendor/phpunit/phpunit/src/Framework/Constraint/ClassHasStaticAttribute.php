@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -17,12 +17,10 @@ use ReflectionClass;
  *
  * The attribute name is passed in the constructor.
  */
-class ClassHasStaticAttribute extends ClassHasAttribute
+final class ClassHasStaticAttribute extends ClassHasAttribute
 {
     /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -38,7 +36,7 @@ class ClassHasStaticAttribute extends ClassHasAttribute
      *
      * @param mixed $other value or object to evaluate
      *
-     * @return bool
+     * @throws \ReflectionException
      */
     protected function matches($other): bool
     {

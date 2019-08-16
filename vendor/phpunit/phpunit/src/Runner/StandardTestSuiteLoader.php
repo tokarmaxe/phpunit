@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -15,20 +15,16 @@ use PHPUnit\Util\Filesystem;
 use ReflectionClass;
 
 /**
- * The standard test suite loader.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class StandardTestSuiteLoader implements TestSuiteLoader
+final class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
-     * @param string $suiteClassName
-     * @param string $suiteClassFile
-     *
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
-     *
-     * @return ReflectionClass
+     * @throws \ReflectionException
      */
-    public function load($suiteClassName, $suiteClassFile = ''): ReflectionClass
+    public function load(string $suiteClassName, string $suiteClassFile = ''): ReflectionClass
     {
         $suiteClassName = \str_replace('.php', '', $suiteClassName);
 
@@ -53,6 +49,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
 
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
+
                 if (\substr($loadedClass, $offset) === $suiteClassName &&
                     $class->getFileName() == $filename) {
                     $suiteClassName = $loadedClass;
@@ -109,11 +106,6 @@ class StandardTestSuiteLoader implements TestSuiteLoader
         );
     }
 
-    /**
-     * @param ReflectionClass $aClass
-     *
-     * @return ReflectionClass
-     */
     public function reload(ReflectionClass $aClass): ReflectionClass
     {
         return $aClass;

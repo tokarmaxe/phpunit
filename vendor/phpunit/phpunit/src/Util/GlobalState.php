@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +11,9 @@ namespace PHPUnit\Util;
 
 use Closure;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class GlobalState
 {
     /**
@@ -23,9 +26,12 @@ final class GlobalState
         '_COOKIE',
         '_SERVER',
         '_FILES',
-        '_REQUEST'
+        '_REQUEST',
     ];
 
+    /**
+     * @throws \ReflectionException
+     */
     public static function getIncludedFilesAsString(): string
     {
         return static::processIncludedFilesAsString(\get_included_files());
@@ -34,7 +40,7 @@ final class GlobalState
     /**
      * @param string[] $files
      *
-     * @return string
+     * @throws \ReflectionException
      */
     public static function processIncludedFilesAsString(array $files): string
     {
@@ -131,7 +137,7 @@ final class GlobalState
         $blacklist[] = 'GLOBALS';
 
         foreach (\array_keys($GLOBALS) as $key) {
-            if (!$GLOBALS[$key] instanceof Closure && !\in_array($key, $blacklist)) {
+            if (!$GLOBALS[$key] instanceof Closure && !\in_array($key, $blacklist, true)) {
                 $result .= \sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,
@@ -153,11 +159,6 @@ final class GlobalState
         return 'unserialize(' . \var_export(\serialize($variable), true) . ')';
     }
 
-    /**
-     * @param array $array
-     *
-     * @return bool
-     */
     private static function arrayOnlyContainsScalars(array $array): bool
     {
         $result = true;
